@@ -5,16 +5,18 @@ import polars as pl
 
 class Metrics(NamedTuple):
     total_spend: float
+    avg_purchase: float
     max_purchase: float
     median_purchase: float
     unique_products: int
+
 
 class MetricsCalculator:
     def __init__(self, logger):
         """Initialize with raw data and logger."""
         self._logger = logger
 
-    def _prepare_dataframe(self, data):
+    def prepare_dataframe(self, data):
         """Create and transform a Polars DataFrame from the nested structure."""
         df = pl.DataFrame(data)
 
@@ -38,17 +40,18 @@ class MetricsCalculator:
 
         return df
 
-    def calculate(self, data):
+    def calculate(self, df: pl.DataFrame):
         """Calculate the metrics for the batch."""
 
-        df = self._prepare_dataframe(data)
         total_spend = df["total_price"].sum()
+        avg_purchase = df["total_price"].mean()
         max_purchase = df["total_price"].max()
         median_purchase = df["total_price"].median()
         unique_products = df["product_name"].n_unique()
 
         return Metrics(
             total_spend=total_spend,
+            avg_purchase=avg_purchase,
             max_purchase=max_purchase,
             median_purchase=median_purchase,
             unique_products=unique_products

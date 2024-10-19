@@ -2,6 +2,7 @@ import click
 
 from src.data_fetcher import DataFetcher
 from src.console_exporter import ConsoleExporter
+from src.data_validator import DataValidator
 from src.metrics_calculator import MetricsCalculator
 from src.utils.logger import Logger
 
@@ -17,17 +18,20 @@ def bootstrapper(filepath):
     try:
         console_exporter = ConsoleExporter(logger)
         data_fetcher = DataFetcher(logger, filepath)
-        metrics_calculator = MetricsCalculator(logger)
+        data_validator = DataValidator(logger)
 
+        metrics_calculator = MetricsCalculator(logger)
         data = data_fetcher.get_data()
-        metrics = metrics_calculator.calculate(data)
+        df = metrics_calculator.prepare_dataframe(data)
+        data_validator.validate(df)
+
+        metrics = metrics_calculator.calculate(df)
         console_exporter.export(metrics)
 
         logger.info(f'File processed successfully: {filepath}')
 
     except Exception as e:
         logger.error(f'Error processing the file: {e}')
-        raise
 
 
 if __name__ == '__main__':

@@ -12,20 +12,21 @@ class ConsoleExporter:
         """
         self._logger = logger
 
-    def export(self, stats: Metrics):
+    def export(self, metrics: Metrics):
         """
         Exports the calculated metrics to the console.
 
-        :param stats: A Metrics named tuple containing the calculated metrics.
+        :param metrics: A Metrics named tuple containing the calculated metrics.
         """
         try:
             self._logger.info("Exporting metrics to console...")
 
             # Print each metric to the console from the named tuple
-            print(f"Total Spend: {stats.total_spend}")
-            print(f"Max Purchase: {stats.max_purchase}")
-            print(f"Median Purchase: {stats.median_purchase}")
-            print(f"Unique Products: {stats.unique_products}")
+            print(f"Total Spend: {metrics.total_spend}")
+            print(f"Average Purchase: {metrics.avg_purchase}")
+            print(f"Max Purchase: {metrics.max_purchase}")
+            print(f"Median Purchase: {metrics.median_purchase}")
+            print(f"Unique Products: {metrics.unique_products}")
 
             self._logger.info("Metrics successfully exported to console.")
 
