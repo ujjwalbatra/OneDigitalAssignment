@@ -42,6 +42,14 @@ class MetricsCalculator:
 
     def calculate(self, df: pl.DataFrame):
         """Calculate the metrics for the batch."""
+        if df.is_empty():
+            return Metrics(
+                total_spend=0.0,
+                avg_purchase=0.0,
+                max_purchase=0.0,
+                median_purchase=0.0,
+                unique_products=0
+            )
 
         total_spend = df["total_price"].sum()
         avg_purchase = df["total_price"].mean()
