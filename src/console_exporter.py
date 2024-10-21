@@ -1,3 +1,4 @@
+import json
 import logging
 
 from src.metrics_calculator import Metrics
@@ -21,12 +22,7 @@ class ConsoleExporter:
         try:
             self._logger.info("Exporting metrics to console...")
 
-            # Print each metric to the console from the named tuple
-            print(f"Total Spend: {metrics.total_spend}")
-            print(f"Average Purchase: {metrics.avg_purchase}")
-            print(f"Max Purchase: {metrics.max_purchase}")
-            print(f"Median Purchase: {metrics.median_purchase}")
-            print(f"Unique Products: {metrics.unique_products}")
+            print(json.dumps(metrics._asdict(), indent=4))
 
             self._logger.info("Metrics successfully exported to console.")
 
